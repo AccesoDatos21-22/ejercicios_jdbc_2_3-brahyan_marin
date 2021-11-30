@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="TestCafeDAO" tests="2" skipped="0" failures="1" errors="0" timestamp="2021-10-31T21:19:45" hostname="DESKTOP-K67G46D" time="0.293">
+<testsuite name="TestCafeDAO" tests="2" skipped="0" failures="1" errors="0" timestamp="2021-11-30T08:05:32" hostname="A02-CPU-01" time="0.294">
   <properties/>
-  <testcase name="La conexiÃ³n no deberÃ­a lanza una excepciÃ³n" classname="TestCafeDAO" time="0.287"/>
-  <testcase name="insertar()" classname="TestCafeDAO" time="0.005">
+  <testcase name="La conexiÃ³n no deberÃ­a lanza una excepciÃ³n" classname="TestCafeDAO" time="0.276"/>
+  <testcase name="insertar()" classname="TestCafeDAO" time="0.009">
     <failure message="org.opentest4j.AssertionFailedError: Unexpected exception thrown: java.lang.NullPointerException: Cannot invoke &quot;org.iesinfantaelena.dao.CafeDAO.insertar(org.iesinfantaelena.model.Cafe)&quot; because &quot;this.cafeDAO&quot; is null" type="org.opentest4j.AssertionFailedError">org.opentest4j.AssertionFailedError: Unexpected exception thrown: java.lang.NullPointerException: Cannot invoke &quot;org.iesinfantaelena.dao.CafeDAO.insertar(org.iesinfantaelena.model.Cafe)&quot; because &quot;this.cafeDAO&quot; is null
 	at org.junit.jupiter.api.AssertDoesNotThrow.createAssertionFailedError(AssertDoesNotThrow.java:83)
 	at org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:54)
