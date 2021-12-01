@@ -11,20 +11,24 @@ import java.util.Objects;
  */
 
 public class Proveedor {
-    private int identificador;
-    private String nombre;
-    private String calle;
-    private String ciudad;
-    private String pais;
-    private int cp;
+    private int identificador = 0;
+    private String nombre = "";
+    private String calle = "";
+    private String ciudad = "";
+    private String pais = "";
+    private int cp = 0;
 
-    public Proveedor(int id,String name,String street,String city,String country, String zip){
+    public Proveedor(){
+
+    }
+
+    public Proveedor(int id,String name,String street,String city,String country, int zip){
         identificador = id;
         nombre = name;
         calle = street;
         ciudad = city;
         pais = country;
-        cp = Integer.parseInt(zip);
+        cp = zip;
     }
 
     //***************Equals y hash code**************

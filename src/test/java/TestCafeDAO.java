@@ -3,10 +3,7 @@ import org.iesinfantaelena.dao.CafeDAO;
 import org.iesinfantaelena.dao.FactoriaDAO;
 import org.iesinfantaelena.model.Cafe;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.List;
 
@@ -23,14 +20,15 @@ public class TestCafeDAO {
         cafeDAO.borrar("Cafe tacilla");
     }
 
-    @Test
+
     @BeforeAll
     @DisplayName("La conexión no debería lanza una excepción")
-        static void conexion() {
-            assertDoesNotThrow(() -> {
-                 cafeDAO= FactoriaDAO.getInstance().getCafeDAO();
-            });
-        }
+    @Test
+    static void conexion() {
+        assertDoesNotThrow(() -> {
+             cafeDAO= FactoriaDAO.getInstance().getCafeDAO();
+        });
+    }
 
     @Test
     void insertar() {
@@ -101,5 +99,10 @@ public class TestCafeDAO {
             assertEquals(200,cafeInsertado2.getVentas());
 
         });
+    }
+
+    @AfterAll
+    static void cerrarConexion(){//Cierra la conexion despues de ejecutar todos los test
+        cafeDAO.cerrar();
     }
 }

@@ -95,8 +95,12 @@ public class  FactoriaDAO {
      */
     public ProveedorDAO getProveedorDAO() throws AccesoDatosException {
 
-       return null;
+        ProveedorDAO pdao = null;
 
+        if(proveedorDAO.equals("JDBCProveedorDAO")){
+            pdao = new JDBCProveedorDAO();
+        }
+       return pdao;
     }
 
 
