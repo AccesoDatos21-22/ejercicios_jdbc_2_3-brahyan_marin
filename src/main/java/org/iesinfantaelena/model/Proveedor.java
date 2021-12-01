@@ -1,5 +1,7 @@
 package org.iesinfantaelena.model;
 
+import java.util.Objects;
+
 /**
  *  @descrition
  *	@author Carlos
@@ -15,6 +17,30 @@ public class Proveedor {
     private String ciudad;
     private String pais;
     private int cp;
+
+    public Proveedor(int id,String name,String street,String city,String country, String zip){
+        identificador = id;
+        nombre = name;
+        calle = street;
+        ciudad = city;
+        pais = country;
+        cp = Integer.parseInt(zip);
+    }
+
+    //***************Equals y hash code**************
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Proveedor proveedor = (Proveedor) o;
+        return identificador == proveedor.identificador && cp == proveedor.cp && Objects.equals(nombre, proveedor.nombre) && Objects.equals(calle, proveedor.calle) && Objects.equals(ciudad, proveedor.ciudad) && Objects.equals(pais, proveedor.pais);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(identificador, nombre, calle, ciudad, pais, cp);
+    }
+    //****************Getters Setters************
     public int getIdentificador() {
         return identificador;
     }

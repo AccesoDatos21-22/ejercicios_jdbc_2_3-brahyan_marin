@@ -44,9 +44,7 @@ public class JDBCCafeDAO implements CafeDAO{
 
             this.stmt.executeUpdate(CREATE_TABLE_PROVEEDORES);
             this.stmt.executeUpdate(CREATE_TABLE_CAFES);
-
-            stmt.executeUpdate("insert into proveedores values(49, 'PROVerior Coffee', '1 Party Place', 'Mendocino', 'CA', '95460');");
-            stmt.executeUpdate("insert into proveedores values(101, 'Acme, Inc.', '99 mercado CALLE', 'Groundsville', 'CA', '95199');");
+            //Se crea proveedor para poder realizar las pruebas
             stmt.executeUpdate("insert into proveedores values(150, 'The High Ground', '100 Coffee Lane', 'Meadows', 'CA', '93966');");
 
         } catch (IOException e) {
