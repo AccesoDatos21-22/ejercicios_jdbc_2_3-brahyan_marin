@@ -1,5 +1,7 @@
 package org.iesinfantaelena.model;
 
+import java.util.Objects;
+
 /**
  *  @descrition
  *	@author Carlos
@@ -27,6 +29,20 @@ public class Cafe {
         this.ventas = ventas;
         this.total = total;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cafe cafe = (Cafe) o;
+        return provid == cafe.provid && Float.compare(cafe.precio, precio) == 0 && ventas == cafe.ventas && total == cafe.total && Objects.equals(nombre, cafe.nombre);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nombre, provid, precio, ventas, total);
+    }
+
     public String getNombre() {
         return nombre;
     }

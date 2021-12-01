@@ -23,10 +23,12 @@ public class JDBCCafeDAO implements CafeDAO{
     private static final String UPDATE_INC_VENTAS_CAFE = "";
     private static final String UPDATE_TOTAL_CAFE = "";
 
+    private static final String CREATE_TABLE_CAFES ="create table if not exists CAFES (CAF_NOMBRE varchar(32) NOT NULL, PROV_ID int NOT NULL, PRECIO numeric(10,2) NOT NULL, VENTAS integer NOT NULL, TOTAL integer NOT NULL, PRIMARY KEY (CAF_NOMBRE), FOREIGN KEY (PROV_ID) REFERENCES PROVEEDORES(PROV_ID));";
+    private static final String CREATE_TABLE_PROVEEDORES ="create table if not exists proveedores (PROV_ID integer NOT NULL, PROV_NOMBRE varchar(40) NOT NULL, CALLE varchar(40) NOT NULL, CIUDAD varchar(20) NOT NULL, PAIS varchar(2) NOT NULL, CP varchar(5), PRIMARY KEY (PROV_ID));";
     private Connection con;
-    private Statement stmt;
-    private ResultSet rs;
-    private PreparedStatement pstmt;
+    private Statement stmt = null;
+    private ResultSet rs = null;
+    private PreparedStatement pstmt = null;
 
     /**
      * Constructor: inicializa conexión
@@ -37,21 +39,26 @@ public class JDBCCafeDAO implements CafeDAO{
         try {
             // Obtenemos la conexión
             this.con = new Utilidades(PROPERTIES_FILE).getConnection();
-            this.stmt = null;
-            this.rs = null;
-            this.pstmt = null;
+
+            this.stmt = con.createStatement();
+
+            this.stmt.executeUpdate(CREATE_TABLE_PROVEEDORES);
+            this.stmt.executeUpdate(CREATE_TABLE_CAFES);
+
+            stmt.executeUpdate("insert into proveedores values(49, 'PROVerior Coffee', '1 Party Place', 'Mendocino', 'CA', '95460');");
+            stmt.executeUpdate("insert into proveedores values(101, 'Acme, Inc.', '99 mercado CALLE', 'Groundsville', 'CA', '95199');");
+            stmt.executeUpdate("insert into proveedores values(150, 'The High Ground', '100 Coffee Lane', 'Meadows', 'CA', '93966');");
+
         } catch (IOException e) {
             // Error al leer propiedades
             // En una aplicación real, escribo en el log y delego
             System.err.println(e.getMessage());
-            throw new AccesoDatosException(
-                    "Ocurrió un error al acceder a los datos");
+            throw new AccesoDatosException("Ocurrió un error al acceder al fichero de propiedades de la BD");
         } catch (SQLException sqle) {
-            // En una aplicación real, escribo en el log y delego
-            // System.err.println(sqle.getMessage());
             Utilidades.printSQLException(sqle);
-            throw new AccesoDatosException(
-                    "Ocurrió un error al acceder a los datos");
+            throw new AccesoDatosException("Error al establecer la conexion a la BD");
+        }finally {
+            liberar();
         }
 
     }
@@ -189,6 +196,45 @@ public class JDBCCafeDAO implements CafeDAO{
     @Override
     public void transferencia(String cafe1, String cafe2) throws AccesoDatosException {
 
+        try{
+            int ventasCafe1 = 0;
+            this.con.setAutoCommit(false);//Los cambios no son automaticos
+            //Consulta y actualizacon cafe 1
+            this.pstmt = con.prepareStatement(SEARCH_CAFE_QUERY, ResultSet.TYPE_FORWARD_ONLY,ResultSet.CONCUR_UPDATABLE);
+            this.pstmt.setString(1,cafe1);
+            this.rs = this.pstmt.executeQuery();
+            while (rs.next()){
+                //Guardamos valor de las ventas del primer cafe y las ponemos a cero
+                ventasCafe1 = rs.getInt(4);
+                rs.updateInt(4,0);
+                rs.updateRow();
+            }
+            //Consulta y actualizacion cafe 2
+            this.pstmt.setString(1,cafe2);
+            this.rs = this.pstmt.executeQuery();
+
+            while( rs.next() ){
+                ventasCafe1 += rs.getInt(4);//Sumamos ambas ventas
+                rs.updateInt(4,ventasCafe1);
+                rs.updateRow();
+            }
+            con.commit();//Se aplicacn cambios a la BD
+        }catch (SQLException sqle){
+            //Se desacen los cambios el caso de error
+            try{this.con.rollback();}
+            catch (SQLException sqleRollback){
+                throw new AccesoDatosException("ERROR AL DESHACER LA TRANSACCION");
+            }
+            Utilidades.printSQLException(sqle);
+            throw new AccesoDatosException("Error al realizar la tranferencia entre cafes");
+        }finally {
+            liberar();
+            try{
+                this.con.setAutoCommit(true);//Se vuelven a hacer los cambios automaticos
+            }catch (SQLException sqle){
+
+            }
+        }
     }
 
     @Override
