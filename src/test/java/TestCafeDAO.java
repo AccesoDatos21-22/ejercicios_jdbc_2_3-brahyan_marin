@@ -9,95 +9,119 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestCafeDAO {
 
     private static CafeDAO cafeDAO;
 
-    @BeforeEach
-    void limpiar() throws AccesoDatosException {//Limpia la BD para que no haya claves repetidas
-        //Ya de paso sirve para probar el borrar
-        cafeDAO.borrar("Cafetito");
-        cafeDAO.borrar("Cafe tacilla");
-    }
+    Cafe cafe1 = new Cafe("Cafetito", 150, 1.0f, 100,1000);
+    Cafe cafe2 = new Cafe("Cafe tacilla", 150, 2.0f, 100,1000);
 
+    Cafe cafeControl = new Cafe("Cafe Invent",150,25f,500,12500);
 
-    @BeforeAll
     @DisplayName("La conexión no debería lanza una excepción")
     @Test
-    static void conexion() {
+    @Order(1)
+    void conexion() {
         assertDoesNotThrow(() -> {
              cafeDAO= FactoriaDAO.getInstance().getCafeDAO();
         });
     }
 
     @Test
+    @Order(2)
     void insertar() {
         assertDoesNotThrow(() -> {
-            Cafe cafe = new Cafe("Cafetito", 150, 1.0f, 100,1000);
-            cafeDAO.insertar(cafe);
-            assertEquals(cafe, cafeDAO.obtener(cafe));
+            //Insertados cafes
+            cafeDAO.insertar(cafe1);
+            cafeDAO.insertar(cafe2);
+            //Comprobamos que los cafes estan en la BD
+            assertEquals(cafe1, cafeDAO.obtener(cafe1));
+            assertEquals(cafe2, cafeDAO.obtener(cafe2));
+            //Comprobamos que el cafe de control no esta
+            assertNotEquals(cafeControl, cafeDAO.obtener(cafeControl));
         });
     }
 
     // añadir resto de tests
     @Test
+    @Order(3)
     void buscar(){
         assertDoesNotThrow( () -> {
-            Cafe cafeInsertado = new Cafe("Cafetito", 150, 1.0f, 100,1000);
-            cafeDAO.insertar(cafeInsertado);
-            Cafe cafeBuscado = cafeDAO.buscar("Cafetito").get(0);
-            assertEquals(cafeBuscado,cafeInsertado);
+            //Evaluamos que los cafes encontrados coinciden con los insertados
+            assertTrue(cafeDAO.buscar("Cafetito").contains(cafe1));
+            assertTrue(cafeDAO.buscar("Cafe tacilla").contains(cafe2));
+            //El cafe no insertado no esta en la BD
+            assertFalse(cafeDAO.buscar("Cafe Invent").contains(cafeControl));
         });
     }
 
     @Test
+    @Order(4)
+    void obtener(){
+        assertDoesNotThrow(() ->{
+            //Los cafes insertados estan en la BD
+            assertEquals(cafe1, cafeDAO.obtener(cafe1));
+            assertEquals(cafe2, cafeDAO.obtener(cafe2));
+            //El cafe no insertado no esta en BD
+            assertNotEquals(cafeControl,cafeDAO.obtener(cafeControl));
+        });
+    }
+
+    @Test
+    @Order(5)
     void cafesPorProveedor(){
         assertDoesNotThrow( () ->{
-            //Se insertan cafes
-            Cafe cafeInsertado1 = new Cafe("Cafetito", 150, 1.0f, 100,1000);
-            Cafe cafeInsertado2 = new Cafe("Cafe tacilla", 150, 2.0f, 100,1000);
-            cafeDAO.insertar(cafeInsertado1);
-            cafeDAO.insertar(cafeInsertado2);
-
+            //Obtenemos todos los cafes del proveedor
             List<Cafe> cafesDevueltos = cafeDAO.cafesPorProveedor(150);
-            assertTrue(cafesDevueltos.contains(cafeInsertado1));
-            assertTrue(cafesDevueltos.contains(cafeInsertado2));
+            //Comprobamos que la lista contiene los cafes
+            assertTrue(cafesDevueltos.contains(cafe1));
+            assertTrue(cafesDevueltos.contains(cafe2));
+            //Comprobamos que no esta el no introducido
+            assertFalse(cafesDevueltos.contains(cafeControl));
         });
     }
 
     @Test
+    @Order(6)
     void actualizar(){
         assertDoesNotThrow( () -> {
-            //Insercion del Cafe
-            Cafe cafeInsertado = new Cafe("Cafetito", 150, 1.0f, 100,1000);
-            cafeDAO.insertar(cafeInsertado);
-            //Modificacion del cafe
-            cafeInsertado.setTotal(0);
-            cafeInsertado.setPrecio(500f);
-            //Actualizacion de la BD
-            cafeDAO.actualizar(cafeInsertado);
+            //Modificacion del cafe1
+            cafe1.setTotal(0);
+            cafe1.setPrecio(500f);
+            //Se comprueba que antes de actualizar NO son el mismo objeto
+            assertNotEquals(cafe1, cafeDAO.obtener(cafe1));
+            //Actualizacion del cafe1 en la BD
+            cafeDAO.actualizar(cafe1);
             //Comprueba que la BD ha volcado los datos correctamente
-            assertEquals(cafeDAO.buscar(cafeInsertado.getNombre()).get(0),cafeInsertado);
+            assertEquals(cafeDAO.obtener(cafe1),cafe1);
         });
     }
 
     @Test
+    @Order(7)
     void transferencia(){
         assertDoesNotThrow( () -> {
-            //Insercion de cafes
-            Cafe cafeInsertado1 = new Cafe("Cafetito", 150, 1.0f, 100,1000);
-            Cafe cafeInsertado2 = new Cafe("Cafe tacilla", 150, 2.0f, 100,1000);
-            cafeDAO.insertar(cafeInsertado1);
-            cafeDAO.insertar(cafeInsertado2);
+            //Ventas que debe tener el sundo cafe al final
+            int ventasFinal = cafe1.getVentas() + cafe2.getVentas();
             //Se realiza tranferencia
-            cafeDAO.transferencia(cafeInsertado1.getNombre(),cafeInsertado2.getNombre());
-            //Se obtiene la informacion actualizada de cada cafe
-            cafeInsertado1 = cafeDAO.obtener(cafeInsertado1);
-            cafeInsertado2 = cafeDAO.obtener(cafeInsertado2);
+            cafeDAO.transferencia(cafe1.getNombre(),cafe2.getNombre());
+            //Se actualizan los obejetos del test a la informacion modificada de la BD
+            cafe1 = cafeDAO.obtener(cafe1);
+            cafe2 = cafeDAO.obtener(cafe2);
             //Se comprueba que han cambiado las ventas de cada cafe
-            assertEquals(0,cafeInsertado1.getVentas());
-            assertEquals(200,cafeInsertado2.getVentas());
+            assertEquals(0,cafe1.getVentas());
+            assertEquals(ventasFinal,cafe2.getVentas());
+        });
+    }
 
+    @Test
+    @Order(8)
+    void borrar() {
+        assertDoesNotThrow(()->{
+            //Borra los 2 cafes de la BD
+            cafeDAO.borrar(cafe1);
+            cafeDAO.borrar(cafe2);
         });
     }
 

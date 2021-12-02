@@ -30,6 +30,7 @@ public class TestProveedorDAO {
     @Order(2)
     void insertar(){//Se insertan los proveedores
         assertDoesNotThrow( ()->{
+            //Insertamos los proveedores
             proveedorDAO.insertar(proveedor1);
             proveedorDAO.insertar(proveedor2);
             proveedorDAO.insertar(proveedor3);
@@ -55,8 +56,10 @@ public class TestProveedorDAO {
     void buscarPorProveedor(){
         assertDoesNotThrow( () ->{
             //El proveedor devuelto es el mismo que el pasado por parametro
-            Proveedor proveedorBuscado = proveedorDAO.buscar(proveedor3);
-            assertEquals(proveedorBuscado,proveedor3);
+            assertEquals(proveedorDAO.buscar(proveedor1),proveedor1);
+            assertEquals(proveedorDAO.buscar(proveedor2),proveedor2);
+            assertEquals(proveedorDAO.buscar(proveedor3),proveedor3);
+            assertEquals(proveedorDAO.buscar(proveedor4),proveedor4);
         });
     }
     @Test
