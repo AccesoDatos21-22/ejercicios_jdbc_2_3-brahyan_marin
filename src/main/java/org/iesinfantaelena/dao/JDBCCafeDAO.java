@@ -19,9 +19,6 @@ public class JDBCCafeDAO implements CafeDAO{
     private static final String INSERT_CAFE_QUERY = "insert into CAFES values (?,?,?,?,?)";
     private static final String DELETE_CAFE_QUERY = "delete from CAFES WHERE CAF_NOMBRE = ?";
     private static final String UPDATE_CAFE_QUERY = "update CAFES set PROV_ID=?,PRECIO=?,VENTAS=?,TOTAL=? where CAF_NOMBRE = ?";
-    private static final String UPDATE_VENTAS_CAFE = "";
-    private static final String UPDATE_INC_VENTAS_CAFE = "";
-    private static final String UPDATE_TOTAL_CAFE = "";
 
     private static final String CREATE_TABLE_CAFES ="create table if not exists CAFES (CAF_NOMBRE varchar(32) NOT NULL, PROV_ID int NOT NULL, PRECIO numeric(10,2) NOT NULL, VENTAS integer NOT NULL, TOTAL integer NOT NULL, PRIMARY KEY (CAF_NOMBRE), FOREIGN KEY (PROV_ID) REFERENCES PROVEEDORES(PROV_ID));";
     private static final String CREATE_TABLE_PROVEEDORES ="create table if not exists proveedores (PROV_ID integer NOT NULL, PROV_NOMBRE varchar(40) NOT NULL, CALLE varchar(40) NOT NULL, CIUDAD varchar(20) NOT NULL, PAIS varchar(2) NOT NULL, CP varchar(5), PRIMARY KEY (PROV_ID));";

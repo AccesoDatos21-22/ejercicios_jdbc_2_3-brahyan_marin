@@ -1,14 +1,12 @@
 package org.iesinfantaelena.utils;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.InvalidPropertiesFormatException;
-import java.util.Properties;
+import java.util.*;
 
 /**
  *
@@ -133,6 +131,22 @@ public class Utilidades {
         } catch (SQLException sqle) {
             System.err.println(sqle);
         }
+    }
+
+    public static List<String> getSqlsCommandsFromFile(File fichero){
+        ArrayList<String> listaComandos = new ArrayList<>();
+        try(BufferedReader br = new BufferedReader(new FileReader(fichero))){
+            String lineaLeida = br.readLine();
+            String comandos="";
+            while (lineaLeida !=null){
+                comandos += lineaLeida;
+                lineaLeida = br.readLine();
+            }
+            listaComandos.addAll(Arrays.asList(comandos.split(";")));
+        }catch (Exception e){
+            System.err.println("Error al leer los comandos del fichero");
+        }
+        return listaComandos;
     }
 
     /**
