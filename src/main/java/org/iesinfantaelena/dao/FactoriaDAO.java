@@ -38,7 +38,12 @@ public class  FactoriaDAO {
      */
     public AlumnoDAO getAlumnoDAO() throws AccesoDatosException {
 
-        return null;
+        AlumnoDAO studentDAO = null;
+
+        if(alumnoDAO.equals("JDBCAlumnoDAO")){
+            studentDAO = new JDBCAlumnoDAO();
+        }
+        return studentDAO;
 
     }
 
@@ -51,7 +56,13 @@ public class  FactoriaDAO {
      */
     public AsignaturaDAO getAsignaturaDAO() throws AccesoDatosException {
 
-        return null;
+        AsignaturaDAO asigDAO = null;
+
+        if( asignaturaDAO.equals("JDBCAsignaturaDAO") ){
+            asigDAO = new JDBCAsignaturaDAO();
+        }
+
+        return asigDAO;
 
     }
 

@@ -5,6 +5,10 @@ import org.iesinfantaelena.model.Asignatura;
 import java.util.List;
 
 public class JDBCAsignaturaDAO implements AsignaturaDAO{
+
+    public JDBCAsignaturaDAO(){
+        
+    }
     @Override
     public List<Asignatura> buscar(String nombre) throws MatriculaException {
         return null;
