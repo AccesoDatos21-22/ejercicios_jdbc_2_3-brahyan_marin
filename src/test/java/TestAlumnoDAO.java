@@ -21,7 +21,7 @@ public class TestAlumnoDAO {
     private static Alumno alumno2 = new Alumno(5000002,"Bellido Gonzalez","Carlos",1,1);
     private static Alumno alumno3 = new Alumno(5000003,"Macareno Fernandez","Jose",3,1);
 
-    private static Asignatura asignatura1 = new Asignatura();
+    private static Asignatura asignatura1 = new Asignatura(2599,"OB","PROGRAMACION II",6f);
 
     @Test
     @Order(1)
@@ -62,6 +62,8 @@ public class TestAlumnoDAO {
             assertEquals(alumno1,alumnoDao.buscar(alumno1.getId()));
             assertEquals(alumno2,alumnoDao.buscar(alumno2.getId()));
             assertEquals(alumno3,alumnoDao.buscar(alumno3.getId()));
+            //Comprobacion de que no esta en la BD un alumno no introducido
+            assertNull(alumnoDao.buscar(2));
         });
     }
 
@@ -100,5 +102,10 @@ public class TestAlumnoDAO {
             assertNull(alumnoDao.buscar(alumno2.getId()));
             assertNull(alumnoDao.buscar(alumno3.getId()));
         });
+    }
+
+    @AfterAll
+    static void cerrarConexion(){
+        alumnoDao.cerrar();
     }
 }

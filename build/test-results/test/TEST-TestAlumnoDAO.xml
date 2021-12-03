@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="TestAlumnoDAO" tests="6" skipped="0" failures="0" errors="0" timestamp="2021-12-03T09:13:00" hostname="A02-CPU-01" time="0.314">
+<testsuite name="TestAlumnoDAO" tests="6" skipped="0" failures="0" errors="0" timestamp="2021-12-03T12:06:26" hostname="A02-CPU-01" time="0.324">
   <properties/>
-  <testcase name="conectar()" classname="TestAlumnoDAO" time="0.261"/>
-  <testcase name="insertar()" classname="TestAlumnoDAO" time="0.03"/>
-  <testcase name="buscarPorId()" classname="TestAlumnoDAO" time="0.003"/>
+  <testcase name="conectar()" classname="TestAlumnoDAO" time="0.265"/>
+  <testcase name="insertar()" classname="TestAlumnoDAO" time="0.026"/>
+  <testcase name="buscarPorId()" classname="TestAlumnoDAO" time="0.017"/>
   <testcase name="buscarPorNombre()" classname="TestAlumnoDAO" time="0.004"/>
   <testcase name="matricular()" classname="TestAlumnoDAO" time="0.001"/>
-  <testcase name="borrar()" classname="TestAlumnoDAO" time="0.011"/>
+  <testcase name="borrar()" classname="TestAlumnoDAO" time="0.007"/>
   <system-out><![CDATA[Connectado a BD
 alumno con id: 5000001 INSERTADO con exito
 alumno con id: 5000002 INSERTADO con exito
@@ -16,8 +16,9 @@ Cause: java.sql.SQLException: Duplicate entry '5000001' for key 'PRIMARY'
 Alumno con id: 5000001 BORRADO
 Alumno con id: 5000002 BORRADO
 Alumno con id: 5000003 BORRADO
+Releasing all open resources ...
 ]]></system-out>
-  <system-err><![CDATA[java.sql.SQLIntegrityConstraintViolationException: (conn=19) Duplicate entry '5000001' for key 'PRIMARY'
+  <system-err><![CDATA[java.sql.SQLIntegrityConstraintViolationException: (conn=36) Duplicate entry '5000001' for key 'PRIMARY'
 	at org.mariadb.jdbc.internal.util.exceptions.ExceptionFactory.createException(ExceptionFactory.java:70)
 	at org.mariadb.jdbc.internal.util.exceptions.ExceptionFactory.create(ExceptionFactory.java:155)
 	at org.mariadb.jdbc.MariaDbStatement.executeExceptionEpilogue(MariaDbStatement.java:274)
@@ -135,6 +136,6 @@ Caused by: java.sql.SQLException: Duplicate entry '5000001' for key 'PRIMARY'
 	... 99 more
 SQLState: 23000
 Error Code: 1062
-Message: (conn=19) Duplicate entry '5000001' for key 'PRIMARY'
+Message: (conn=36) Duplicate entry '5000001' for key 'PRIMARY'
 ]]></system-err>
 </testsuite>

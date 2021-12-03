@@ -184,7 +184,6 @@ public class JDBCAlumnoDAO implements AlumnoDAO{
                 this.pstmt.close();
                 this.pstmt = null;
             }
-
             if (this.stmt != null) {
                 this.stmt.close();
                 this.stmt = null;

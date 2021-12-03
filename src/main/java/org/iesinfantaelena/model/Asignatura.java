@@ -8,15 +8,23 @@ public class Asignatura {
     private String nombre;
     private String tipo;
     private float creditos;
-    private boolean superada;
+    private boolean superada = false;
 
-    public Asignatura(int identificador, String nombre, String tipo, float creditos, boolean superada) {
+    public Asignatura(int identificador, String tipo, String nombre, float creditos) { //Constructor para BD
+        this.identificador = identificador;
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.creditos = creditos;
+    }
+    //Constructor cuando la contine un alumno
+    public Asignatura(int identificador, String tipo, String nombre, float creditos, boolean superada) {
         this.identificador = identificador;
         this.nombre = nombre;
         this.tipo = tipo;
         this.creditos = creditos;
         this.superada = superada;
     }
+
 
     public Asignatura() {
     }
