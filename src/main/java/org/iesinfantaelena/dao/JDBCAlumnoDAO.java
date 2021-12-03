@@ -12,9 +12,8 @@ import java.util.List;
 
 public class JDBCAlumnoDAO implements AlumnoDAO{
 
-    //Fichero configuracin Sqlite
-    //private static final String PROPERTIES_FILE = System.getProperty("user.dir") + "/src/main/resources/sqlite-properties.xml";
-    private static final String PROPERTIES_FILE = System.getProperty("user.dir") + "/src/main/resources/h2-properties.xml";
+    //Fichero configuracion mariadb
+    private static final String PROPERTIES_FILE = System.getProperty("user.dir") + "/src/main/resources/mariadb-properties.xml";
     //Fichero creacion se BD matricula y sus diferentes tablas
     private static final String SQL_COMMANDS_FILE = System.getProperty("user.dir") + "/src/main/resources/alumnos-asignaturas.sql";
     //Queries
